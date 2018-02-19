@@ -94,7 +94,7 @@ static int global_vbus_suspend_status;
 static int global_id_pin_suspend_status;
 
 static int usbhost_fixed_install_mode = 1;
-extern int usbhost_fastcharge_in_host_mode;
+static int usbhost_fastcharge_in_host_mode = 1;
 extern int usbhost_hostmode;
 extern int usbhost_charging_state;
 extern volatile int usbhost_external_power;
