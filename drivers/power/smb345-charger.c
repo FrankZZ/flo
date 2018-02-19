@@ -140,16 +140,14 @@ static int float_volt_setting = 4300;
 
 static int usbhost_fixed_install_mode = 1;
 static int usbhost_fastcharge_in_host_mode = 1;
-extern int usbhost_hostmode;
-extern int usbhost_charging_state;
-extern volatile int usbhost_external_power;
-extern volatile int usbhost_charge_slave_devices;
-extern volatile unsigned long usbhost_wake_in_suspend_total_ms;
-extern int usbhost_fetching_ma;
-extern int usbhost_poweroff_counter;
+int usbhost_hostmode;
+volatile int usbhost_charging_state;
+volatile int usbhost_external_power;
+volatile int usbhost_charge_slave_devices = 0;
+volatile unsigned long usbhost_wake_in_suspend_total_ms = 0;
 #define MAX_FETCH_MA 1200
 
-extern struct timespec wakeStartTP; // from arch/arm/mach-msm/pm-8x60.c
+// extern struct timespec wakeStartTP; // from arch/arm/mach-msm/pm-8x60.c
 extern bool otg_plugged;
 struct timespec lastPowerOn;
 
@@ -437,7 +435,7 @@ smb345_set_InputCurrentlimit(struct i2c_client *client, u32 current_setting)
     else
         charger->curr_limit = 2000;
 
-    usbhost_fetching_ma = charger->curr_limit;
+    // usbhost_fetching_ma = charger->curr_limit;
 
     if (current_setting > 900) {
         charger->time_of_1800mA_limit = jiffies;
@@ -486,8 +484,8 @@ static irqreturn_t smb345_inok_isr(int irq, void *dev_id)
 
     if(status) {
         // power off
-        usbhost_poweroff_counter++;
-        wakeStartTP.tv_sec = 0l;
+        // usbhost_poweroff_counter++;
+        // wakeStartTP.tv_sec = 0l;
     }
 
     return IRQ_HANDLED;
@@ -894,7 +892,7 @@ int usb_cable_type_detect(unsigned int chgr_type)
 
         usbhost_external_power = 0;
         usbhost_charging_state = 0;
-        usbhost_fetching_ma = 0;
+        // usbhost_fetching_ma = 0;
 
         touch_callback(non_cable);
     } else {

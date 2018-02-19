@@ -101,7 +101,7 @@ extern volatile int usbhost_external_power;
 extern volatile int usbhost_charge_slave_devices;
 extern volatile unsigned long usbhost_wake_in_suspend_total_ms;
 static int usbhost_power_slaves = 0;
-extern int usbhost_fetching_ma;
+// extern int usbhost_fetching_ma;
 bool volatile otg_plugged = false;
 bool volatile hostmodeStoppedOnSuspend = false;
 
@@ -1205,7 +1205,7 @@ static int msm_otg_notify_power_supply(struct msm_otg *motg, unsigned mA)
 
 	if(mA<=0) {
 		usbhost_charging_state = 0;
-		usbhost_fetching_ma = 0;
+		// usbhost_fetching_ma = 0;
 		if (motg->cur_power > 0) {
 			if (power_supply_set_online(psy, false))
 				goto psy_not_supported;
@@ -1215,7 +1215,7 @@ static int msm_otg_notify_power_supply(struct msm_otg *motg, unsigned mA)
 
 	if(usbhost_charging_state<=0)
 		usbhost_charging_state = 1;
-	usbhost_fetching_ma = mA;
+	// usbhost_fetching_ma = mA;
 
 	/* Set max current limit */
 	dev_info(motg->phy.dev, "current: %d -> %d (mA)\n",
